@@ -113,3 +113,4 @@ k6 run script.js
 
 - [Documentação K6](https://k6.io/docs/)
 
+## criando github actions
