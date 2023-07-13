@@ -34,13 +34,14 @@ jobs:
     needs: start-runner 
     runs-on: ${{ needs.start-runner.outputs.label }}
     steps:
-    - name: Checkout
+    - name: Checkout tools repo
       uses: actions/checkout@v3
       with:
-        path: main
+        repository: jfilhoGN/poc-k6
+        path: k6-poc
     - name: Docker Pull
       run: docker pull grafana/k6
-    - run: cd main
+    - run: cd k6-poc
     - run: docker run --rm -i grafana/k6 run - <scripts/script1.js
   stop-runner:
     name: Stop EC2 runner
