@@ -20,11 +20,11 @@ jobs:
         with:
           mode: start
           github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-          ec2-image-id: ami-02446cef1f75690a1
+          ec2-image-id: ami-0a0c71c196254402e
           ec2-instance-type: t2.micro
           subnet-id: subnet-09a5aa6de17452829
           security-group-id: sg-02cf0f09a3637b226
-          iam-role-name: access-githubactions # optional, requires additional permissions
+          iam-role-name: github-actions-aws # optional, requires additional permissions
           aws-resource-tags: > # optional, requires additional permissions
             [
               {"Key": "Name", "Value": "ec2-github-runner"},
