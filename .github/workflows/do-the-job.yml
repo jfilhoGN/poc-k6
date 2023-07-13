@@ -34,11 +34,10 @@ jobs:
     needs: start-runner 
     runs-on: ${{ needs.start-runner.outputs.label }}
     steps:
-    - name: Checkout repositotory
-      uses: CodersLab-core/action-checkout-and-move@v1.0.1
+    - name: Checkout
+      uses: actions/checkout@v3
       with:
-        repository: https://github.com/jfilhoGN/poc-k6.git
-        dest-path: .
+        path: main
     - name: Docker Pull
       run: ls
   stop-runner:
