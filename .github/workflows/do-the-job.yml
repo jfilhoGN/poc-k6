@@ -40,6 +40,7 @@ jobs:
         path: main
     - name: Docker Pull
       run: ls
+    - run: cd main
   stop-runner:
     name: Stop EC2 runner
     needs:
