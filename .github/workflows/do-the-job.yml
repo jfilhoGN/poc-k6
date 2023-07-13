@@ -20,7 +20,7 @@ jobs:
         with:
           mode: start
           github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-          ec2-image-id: ami-0e7c579a4aa9fc0ac
+          ec2-image-id: ami-01dc4d0efa350bd51
           ec2-instance-type: t2.micro
           subnet-id: subnet-09a5aa6de17452829
           security-group-id: sg-02cf0f09a3637b226
@@ -36,8 +36,9 @@ jobs:
     steps:
       - name: Docker Pull
         run: docker pull grafana/k6
+      - run: cd poc-k6
       - name: Execute K6 with Docker
-        run: docker run --rm -i grafana/k6 run - <script1.js
+        run: docker run --rm -i grafana/k6 run - <scripts/script1.js
   stop-runner:
     name: Stop EC2 runner
     needs:
