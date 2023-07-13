@@ -113,3 +113,8 @@ k6 run script.js
 
 - [Documentação K6](https://k6.io/docs/)
 
+## Criando pipeline K6 com Runner EC2
+
+**EM DESENVOLVIMENTO**
+
+[Actions funcionando](https://github.com/jfilhoGN/poc-k6/actions/workflows/do-the-job.yml)
