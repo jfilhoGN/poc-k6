@@ -1,4 +1,4 @@
-name: do-the-job
+name: Performance Test
 on: pull_request
 jobs:
   start-runner:
@@ -41,8 +41,7 @@ jobs:
         path: k6-poc
     - name: Docker Pull
       run: docker pull grafana/k6
-    - run: cd k6-poc
-    - run: docker run --rm -i grafana/k6 run - <scripts/script1.js
+    - run: cd k6-poc ; docker run --rm -i grafana/k6 run - <scripts/script1.js
   stop-runner:
     name: Stop EC2 runner
     needs:
