@@ -32,12 +32,15 @@ jobs:
   do-the-job:
     name: After Start Runner and Configuration EC2
     needs: start-runner 
-    runs-on: ${{ needs.start-runner.outputs.label }} 
+    runs-on: ${{ needs.start-runner.outputs.label }}
     steps:
-      - name: Docker Pull
-        run: docker pull grafana/k6
-      - name: Execute K6 with Docker
-        run: docker run --rm -i grafana/k6 run - <script1.js
+    - name: Checkout repositotory
+      uses: CodersLab-core/action-checkout-and-move@v1.0.1
+      with:
+        repository: https://github.com/jfilhoGN/poc-k6.git
+        dest-path: .
+    - name: Docker Pull
+      run: ls
   stop-runner:
     name: Stop EC2 runner
     needs:
