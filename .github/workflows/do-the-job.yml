@@ -2,7 +2,7 @@ name: do-the-job
 on: pull_request
 jobs:
   start-runner:
-    name: Start self-hosted EC2 runner
+    name: Start EC2 runner
     runs-on: ubuntu-latest
     outputs:
       label: ${{ steps.start-ec2-runner.outputs.label }}
@@ -20,31 +20,31 @@ jobs:
         with:
           mode: start
           github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-          ec2-image-id: ami-0a0c71c196254402e
+          ec2-image-id: ami-0e7c579a4aa9fc0ac
           ec2-instance-type: t2.micro
           subnet-id: subnet-09a5aa6de17452829
           security-group-id: sg-02cf0f09a3637b226
-          aws-resource-tags: > # optional, requires additional permissions
+          aws-resource-tags: > 
             [
               {"Key": "Name", "Value": "ec2-github-runner"},
               {"Key": "GitHubRepository", "Value": "${{ github.repository }}"}
             ]
   do-the-job:
-    name: Do the job on the runner
-    needs: start-runner # required to start the main job when the runner is ready
-    runs-on: ${{ needs.start-runner.outputs.label }} # run the job on the newly created runner
+    name: After Start Runner and Configuration EC2
+    needs: start-runner 
+    runs-on: ${{ needs.start-runner.outputs.label }} 
     steps:
       - name: Docker Pull
         run: docker pull grafana/k6
       - name: Execute K6 in Docker
         run: docker run --rm -i grafana/k6 run - <scripts/script1.js
   stop-runner:
-    name: Stop self-hosted EC2 runner
+    name: Stop EC2 runner
     needs:
-      - start-runner # required to get output from the start-runner job
-      - do-the-job # required to wait when the main job is done
+      - start-runner 
+      - do-the-job 
     runs-on: ubuntu-latest
-    if: ${{ always() }} # required to stop the runner even if the error happened in the previous jobs
+    if: ${{ always() }} # 
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
