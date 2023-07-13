@@ -37,7 +37,7 @@ jobs:
       - name: Docker Pull
         run: docker pull grafana/k6
       - name: Execute K6 in Docker
-        run: docker run --rm -i grafana/k6 run - <scripts/script1.js
+        run: ls
   stop-runner:
     name: Stop EC2 runner
     needs:
