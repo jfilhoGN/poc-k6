@@ -1,0 +1,32 @@
+version: '3.7'
+volumes:
+  prometheus-data:
+  grafana-data-storage:
+services:
+  k6-prom:
+    build: .
+    depends_on:
+      - grafana
+    volumes:
+      - .:/app:delegated
+    environment:
+      - K6_PROMETHEUS_RW_SERVER_URL=http://prometheus:9090/api/v1/write
+    command: run -o xk6-prometheus-rw /app/scripts/script2.js
+  prometheus:
+    image: prom/prometheus:latest
+    depends_on:
+      - grafana
+    ports:
+      - 9000:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    command: --enable-feature=remote-write-receiver --config.file=/etc/prometheus/prometheus.yml
+  grafana:
+    image: grafana/grafana:latest
+    volumes:
+      - grafana-data-storage:/var/lib/grafana
+    ports:
+      - 4000:4000
+    environment:
+      - GF_SERVER_HTTP_PORT=4000
