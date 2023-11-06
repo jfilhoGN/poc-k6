@@ -3,7 +3,10 @@
 //https://k6.io/docs/examples/data-parameterization/#retrieving-unique-data
 import http from 'k6/http';
 import { check, sleep } from 'k6';
-import {exec, scenario} from 'k6/execution';
+import { exec, scenario } from 'k6/execution';
+import { SharedArray } from "k6/data";
+
+import papaparse from "https://jslib.k6.io/papaparse/5.1.1/index.js";
 
 export function randomItem(arrayOfItems) {
   return arrayOfItems[Math.floor(Math.random() * arrayOfItems.length)];
@@ -11,23 +14,25 @@ export function randomItem(arrayOfItems) {
 
 export const options = {
   stages: [
-    { duration: '1m', target: 3 }
+    { duration: '1m', target: 100 },
+    { duration: '30m', target: 100 }
   ],
 };
 
-function getItem(arrayOfItems, iteration) {
+function sequencyItem(arrayOfItems, iteration) {
   return arrayOfItems[iteration]
 }
 
+const skus = new SharedArray("skus", function () {
+  return papaparse.parse(open("./skus.csv"), {
+    header: true,
+  }).data;
+});
+
 export default function () {
+
   const array = []
-  const size = 2000
-  for (let i = 0; i < size; i++) {
-    array.push(i)
-  }
-  let id = getItem(array, `${scenario.iterationInTest}`)
-  console.log(id)
-  const res = http.get('https://httpbin.test.k6.io/');
-  check(res, { 'status was 200': (r) => r.status == 200 });
+  let skuss = sequencyItem(skus, scenario.iterationInTest)
+  console.info(skuss.IdSku)
   sleep(1);
 }
